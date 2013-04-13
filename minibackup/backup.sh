@@ -1,14 +1,30 @@
 #!/bin/bash
 
-test -f backup.cfg || ( echo "Config not found" && exit 1 )
+# no automatic install, to install:
+# sudo ln -s /path/to/scriptthings/minibackup/backup.sh /usr/local/bin/backup
 
- . backup.cfg
+if [ -L ${0} ]; then
+    scriptpath=`readlink ${0}`
+else
+    scriptpath=${0}
+fi
+
+basepath=`dirname ${scriptpath}`
+test -f ${basepath}/backup.cfg || ( echo "Config not found" && exit 1 )
+
+opts=""
+# any arg == verbose
+if [ "${1}" != "" ]; then
+    opts="-v"
+fi
+
+ . ${basepath}/backup.cfg
 
 echo -n "Backup started " &&
 echo `date`;
 
 for d in ${dirs}; do
-    rsync -rvutgplo ${src}/${d}/ ${dst}/${d}/;
+    rsync -rutgplo ${opts} ${src}/${d}/ ${dst}/${d}/;
 done
 
 echo -n "Backup finished " &&
