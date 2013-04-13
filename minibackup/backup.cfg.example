@@ -1,0 +1,4 @@
+src="/media/some_drive";
+dst="/media/some_other_drive";
+dirs="Folder1 Folder2";
+
