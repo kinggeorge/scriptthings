@@ -23,7 +23,10 @@ fi
 echo -n "Backup started " &&
 echo `date`;
 
+sudo chown -R ${USER} ${src}
+
 for d in ${dirs}; do
+    mkdir -p ${src}/${d}
     rsync -rutgplo ${opts} ${src}/${d}/ ${dst}/${d}/;
 done
 
